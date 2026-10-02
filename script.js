@@ -277,3 +277,5 @@ form.addEventListener("submit", e => {
 
 const yr = $("#yr");
 yr.textContent = new Date().getFullYear();
+~/mywebsite $
+printf '\nconst ytLatest = document.getElementById("youtube-latest");\nconst ytChannel = "UCGJgOg24mPVJIjcOy-wwkjA";\n' >> script.js
