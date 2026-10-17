@@ -2,7 +2,7 @@ const SITE = {
   youtube: "https://youtube.com/@sanatanrahasyakathaofficial",
   short: "https://youtube.com/shorts/EPMNMkAq-qo",
   email: "",
-  whatsapp: "919896663874"
+  whatsapp: ""
 };
 
 const $ = (s, c = document) => c.querySelector(s);
@@ -17,14 +17,8 @@ const openExt = (a, url) => {
 $$("[data-youtube]").forEach(a => openExt(a, SITE.youtube));
 $$("[data-youtube-short]").forEach(a => openExt(a, SITE.short));
 $$("[data-mail]").forEach(a => {
-  if (!SITE.email) { a.remove(); return; }
+  if (!SITE.email) { a.closest(".c-item").remove(); return; }
   a.href = "mailto:" + SITE.email;
-});
-$$("[data-phone]").forEach(a => {
-  if (!SITE.whatsapp) { a.closest(".c-item").remove(); return; }
-  a.href = "https://wa.me/" + SITE.whatsapp;
-  a.target = "_blank";
-  a.rel = "noopener";
 });
 
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -287,7 +281,6 @@ form.addEventListener("submit", e => {
     setTimeout(() => {
       form.reset();
       btn.disabled = false;
-      note.textContent = "अगर WhatsApp नहीं खुला, तो +91 98966 63874 पर संदेश करें। जय श्री राम 🙏";
     }, 1200);
     return;
   }
@@ -300,13 +293,13 @@ form.addEventListener("submit", e => {
     setTimeout(() => {
       form.reset();
       btn.disabled = false;
-      note.textContent = "अगर ऐप नहीं खुला, तो सीधे " + SITE.email + " पर लिखें। जय श्री राम 🙏";
     }, 1200);
     return;
   }
 
   btn.disabled = false;
-  note.textContent = "संदेश भेजने के लिए हमारे YouTube चैनल पर सीधे संदेश करें। जय श्री राम 🙏";
+  note.textContent = "हमारा चैनल खुल रहा है — वहाँ से संदेश भेजें। जय श्री राम 🙏";
+  window.open(SITE.youtube, "_blank", "noopener");
 });
 
 const yr = $("#yr");
