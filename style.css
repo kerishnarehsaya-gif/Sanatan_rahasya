@@ -643,6 +643,7 @@ h1 em{font-style:normal;display:block;font-family:var(--display);font-size:clamp
 .c-form button:disabled{opacity:.75;cursor:not-allowed}
 .form-note{font-size:13.5px;min-height:20px;color:var(--gold-2)}
 .form-note.bad{color:#ff7a7a}
+.form-hint{font-size:12.5px;color:var(--muted);margin:6px 0 0;text-align:center}
 
 /* ---------- footer ---------- */
 .foot{position:relative;padding:70px 0 0;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(13,23,56,.35),#050410);overflow:hidden}

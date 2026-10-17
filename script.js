@@ -1,9 +1,8 @@
 const SITE = {
   youtube: "https://youtube.com/@sanatanrahasyakathaofficial",
-  short: "https://youtube.com/shorts/_mJ29KiNdwc",
-  email: "email@sanatanrahasya.com",
-  phone: "+919000000000",
-  whatsapp: "919000000000"
+  short: "https://youtube.com/shorts/EPMNMkAq-qo",
+  email: "",
+  whatsapp: "919896663874"
 };
 
 const $ = (s, c = document) => c.querySelector(s);
@@ -17,8 +16,12 @@ const openExt = (a, url) => {
 
 $$("[data-youtube]").forEach(a => openExt(a, SITE.youtube));
 $$("[data-youtube-short]").forEach(a => openExt(a, SITE.short));
-$$("[data-mail]").forEach(a => a.href = "mailto:" + SITE.email);
+$$("[data-mail]").forEach(a => {
+  if (!SITE.email) { a.remove(); return; }
+  a.href = "mailto:" + SITE.email;
+});
 $$("[data-phone]").forEach(a => {
+  if (!SITE.whatsapp) { a.closest(".c-item").remove(); return; }
   a.href = "https://wa.me/" + SITE.whatsapp;
   a.target = "_blank";
   a.rel = "noopener";
@@ -189,7 +192,7 @@ const openLb = (id, isShort) => {
       '<div style="display:grid;place-content:center;gap:14px;height:100%;text-align:center;padding:24px;font-family:inherit">' +
       '<div style="font-family:\'Tiro Devanagari Hindi\',serif;font-size:56px;color:#e8b54b">ॐ</div>' +
       '<p style="color:#e8b54b;font-size:17px;margin:0">अभी वीडियो जोड़ा नहीं गया है</p>' +
-      '<p style="color:#a9a2bd;font-size:13.5px;margin:0">index.html में <b>data-video="PASTE_…"</b> की जगह अपना YouTube Video ID डालें</p>' +
+      '<p style="color:#a9a2bd;font-size:13.5px;margin:0">यह वीडियो अभी उपलब्ध नहीं है। कृपया चैनल पर नया वीडियो देखें।</p>' +
       '</div>';
   } else {
     lbFrame.innerHTML =
@@ -264,15 +267,46 @@ form.addEventListener("submit", e => {
   }
   note.classList.remove("bad");
   const btn = form.querySelector("button[type=submit]");
-  form.classList.add("sending");
   btn.disabled = true;
-  note.textContent = "";
-  setTimeout(() => {
-    form.reset();
-    form.classList.remove("sending");
-    btn.disabled = false;
-    note.textContent = "धन्यवाद! आपका संदेश प्राप्त हुआ। जय श्री राम 🙏";
-  }, 1500);
+  const name = $("#name").value.trim();
+  const mail = $("#email").value.trim();
+  const topic = $("#topic").value.trim();
+  const msg = $("#message").value.trim();
+  const body = [
+    "*नाम:* " + name,
+    "*ईमेल:* " + mail,
+    topic ? "*विषय:* " + topic : "",
+    "",
+    msg
+  ].filter(Boolean).join("\n");
+
+  if (SITE.whatsapp) {
+    note.textContent = "WhatsApp खुल रहा है…";
+    window.location.href = "https://wa.me/" + SITE.whatsapp +
+      "?text=" + encodeURIComponent(body);
+    setTimeout(() => {
+      form.reset();
+      btn.disabled = false;
+      note.textContent = "अगर WhatsApp नहीं खुला, तो +91 98966 63874 पर संदेश करें। जय श्री राम 🙏";
+    }, 1200);
+    return;
+  }
+
+  if (SITE.email) {
+    note.textContent = "आपका ईमेल ऐप खुल रहा है…";
+    window.location.href = "mailto:" + SITE.email +
+      "?subject=" + encodeURIComponent("संदेश: " + (topic || "वेबसाइट")) +
+      "&body=" + encodeURIComponent(body);
+    setTimeout(() => {
+      form.reset();
+      btn.disabled = false;
+      note.textContent = "अगर ऐप नहीं खुला, तो सीधे " + SITE.email + " पर लिखें। जय श्री राम 🙏";
+    }, 1200);
+    return;
+  }
+
+  btn.disabled = false;
+  note.textContent = "संदेश भेजने के लिए हमारे YouTube चैनल पर सीधे संदेश करें। जय श्री राम 🙏";
 });
 
 const yr = $("#yr");
